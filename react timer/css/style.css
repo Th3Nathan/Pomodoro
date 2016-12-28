@@ -1,0 +1,46 @@
+body {
+  background-color:darkred;
+}
+
+.clock {
+  max-width:600px;
+  margin-top:50px;
+  background-color:lightgreen;
+  border-radius:100px;
+  padding:30px;
+  color:darkred;
+}
+
+.title {
+  text-align:center;
+}
+
+.time {
+}
+
+.selector {
+    position: relative;
+    cursor: pointer;
+    top:33px;
+    left:10px;
+}
+
+.top {
+  position:absolute;
+  top:0; 
+}
+
+.bottom {
+  position:absolute;
+  bottom:0; 
+}
+
+.time-box {
+  text-align:center;
+  border-radius:100px;
+  color:lightgreen;
+  padding:25px;
+  margin-right:-10px;
+  margin-left:10px;
+  cursor:pointer;
+}

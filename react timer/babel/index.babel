@@ -1,0 +1,165 @@
+
+
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      time_minutes: 20,
+      time_seconds: 0,
+      ticking: 0,
+      work_time: 20,
+      break_time: 5,
+      workOrBreak: "Work",
+      color: "darkred"
+    };
+  }
+  
+
+ takeSecond(){
+    const { time_minutes, time_seconds, ticking } = this.state
+    if (ticking){
+      if (time_seconds > 0){
+        this.setState({
+          time_seconds: time_seconds - 1
+        })
+      }
+      else if (time_seconds == 0 && time_minutes > 0){
+        this.setState({
+          time_minutes: time_minutes - 1,
+          time_seconds: 59
+        })
+      }
+      else this.switchTimer();
+    }
+    else clearInterval(name)
+  }
+  
+  switchTimer(){
+    const {break_time, work_time, workOrBreak} = this.state
+    if (workOrBreak == "Work"){
+     this.setState({
+       workOrBreak: "Break",
+       time_minutes: break_time,   
+       color: "darkgreen"
+     })
+    var snd = new Audio("http://soundbible.com/grab.php?id=1218&type=mp3"); 
+snd.play();
+    }
+    
+    else this.setState({
+       workOrBreak: "Work",
+       time_minutes: work_time,   
+       color: "darkred"
+     })
+        var snd = new Audio("http://soundbible.com/grab.php?id=1218&type=mp3"); 
+snd.play();
+  }
+  
+  toggleCountdown(){
+      const { time_minutes, time_seconds, ticking } = this.state
+      if (!ticking){
+        this.setState({ticking: 1})
+        name = setInterval(this.takeSecond.bind(this), 1000);
+      }
+      else{
+        clearInterval(name);
+        this.setState({ticking: 0})
+      }
+  }
+  
+  //The following four functions might be better off as one. It's easy to understand as is, but a lot of code, would be annoying to make changes to each one. Will consider implementing something like handleTime(breakOrWork, increaseOrDecrease) 
+  addWorkMinute(){
+    const {work_time, time_seconds, time_minutes, ticking, workOrBreak } = this.state
+    if (workOrBreak == "Work")
+       this.setState({work_time: work_time + 1,
+           time_seconds: 0,
+           time_minutes: work_time + 1,
+           ticking: false
+        })
+  }
+  
+  takeWorkMinute(){
+    const {work_time, time_seconds, time_minutes, ticking, workOrBreak } = this.state
+    if (work_time > 1){
+      if (workOrBreak == "Work")
+      this.setState({work_time: work_time - 1,
+                   time_seconds: 0,
+                   time_minutes: work_time - 1,
+                   ticking: false
+                   })
+    }
+  }
+  
+  addBreakMinute(){
+   const {break_time, time_seconds, time_minutes, ticking, workOrBreak } = this.state
+   this.setState({break_time: break_time + 1,
+                   })
+    if (workOrBreak == "Break")
+      this.setState({break_time: break_time + 1,
+                   time_seconds: 0,
+                   time_minutes: break_time + 1,
+                   ticking: false
+                   })
+  }
+  
+  takeBreakMinute(){
+     const {break_time, time_seconds, time_minutes, ticking, workOrBreak } = this.state
+     if (break_time > 1){
+       this.setState({break_time: break_time - 1,
+       })
+       if (workOrBreak == "Break")
+       this.setState({break_time: break_time - 1,
+                   time_seconds: 0,
+                   time_minutes: break_time - 1,
+                   ticking: false
+                   })
+    }
+  }
+  
+  
+  
+ render() {
+    const {time_minutes, time_seconds, ticking, work_time, break_time, workOrBreak, color } = this.state
+    const stateColor = {background: color}
+    
+return (
+<div className="container clock">  
+  <div className="row">
+    <div className="col-xs-12">
+      <h1 className="title">Pomodoro Clock</h1>
+    </div>
+  </div> 
+  <div className="row">
+    <div className="col-xs-2">
+      <h3>Work: </h3>
+    </div>
+    <div className="col-xs-1">
+      <h3 className="time work_time">{work_time}</h3>
+    </div>
+    <div className="col-xs-1 selector">
+      <span onClick={() => this.takeWorkMinute()}  className="top">&#9660;</span>
+      <span onClick={() => this.addWorkMinute()} className="bottom">&#9650;</span>
+    </div>
+    <div className="col-xs-4">
+      <div style={stateColor} onClick={() => this.toggleCountdown()} className="time-box">
+      <h3>{workOrBreak}</h3>
+      <h3 className="remaining">{time_minutes} m {time_seconds} s</h3>
+      </div>
+    </div>  
+    <div className="col-xs-2">
+      <h3>Break: </h3>
+    </div>
+    <div className="col-xs-1">
+      <h3 className="time work_time">{break_time}</h3>
+    </div>
+    <div className="col-xs-1 selector">
+      <span onClick={() => this.takeBreakMinute()} className="top">&#9660;</span>
+      <span onClick={() => this.addBreakMinute()} className="bottom">&#9650;</span>
+    </div>
+  </div>    
+</div>
+)}
+}
+
+
+ReactDOM.render(<Clock />, document.getElementById('container'))
